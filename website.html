@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GVR Hotel - All in One</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7f8;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #0077cc, #00aaff);
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+        a:hover, a:focus {
+      text-decoration: underline;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+    nav {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-weight: 600;
+    }
+    nav a {
+      color: white;
+      font-size: 1rem;
+      padding-bottom: 4px;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav a:hover,
+    nav a.active {
+      border-bottom-color: #ffcc00;
+      outline-offset: 8px;
+    }
+    main {
+      margin-top: 130px;
+      flex-grow: 1;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 1rem 3rem;
+    }
+    section {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      scroll-margin-top: 120px; /* offset for fixed header */
+    }
+    h2 {
+      margin-bottom: 1rem;
+      color: #0077cc;
+      border-bottom: 3px solid #00aaff;
+      display: inline-block;
+      padding-bottom: 6px;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    /* Facilities */
+    ul.facilities {
+      list-style-type: disc;
+      padding-left: 1.2rem;
+      font-weight: 600;
+      color: #555;
+    }
+    /* Rooms */
+    .room-grid {
+      display: grid;
+      gap: 1.0rem;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    }
+    article.room {
+      background: #e7f0fd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    article.room:hover {
+      transform: translateY(-5px);
+    }
+    article.room img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #ccc;
+    }
+    .room-content {
+      padding: 1rem 1.2rem;
+    }
+    .room-content h3 {
+      margin-bottom: 0.5rem;
+      color: #004f99;
+    }
+    .room-content p {
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+      color: #555;
+    }
+    .room-content .price {
+      font-weight: 700;
+      color: #0077cc;
+      font-size: 1.1rem;
+    }
+ /* Gallery */
+    .gallery-grid {
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .gallery-grid img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .gallery-grid img:hover {
+      transform: scale(1.05);
+    }
+   
+    /* Contact */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 600px;
+    }
+    label {
+      font-weight: 600;
+      color: #004f99;
+    }
+    input, textarea {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    button {
+      width: 140px;
+      padding: 0.6rem;
+      background: #0077cc;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      align-self: flex-start;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    .contact-info {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #555;
+      max-width: 600px;
+    }
+    .contact-info strong {
+      color: #0077cc;
+    }
+    footer {
+      background: #004f99;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+      user-select: none;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      nav {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+      main {
+        margin-top: 110px;
+        padding: 0 0.75rem 2rem;
+      }
+      article.room img {
+        height: 160px;
+      }
+      .gallery-grid img {
+        height: 180px;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GVR Hotel</h1>
+    <nav>
+      <a href="#home" class="active">Home</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#Registration">Booking</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section id="home" tabindex="1">
+      <h2>Welcome to GVR Hotel</h2>
+      <p>
+        Experience comfort and hospitality in the heart of the city. Our hotel offers cozy rooms, modern amenities, and friendly service for a relaxing stay.
+      </p>
+      <p>
+        Whether you're here for business or leisure, we ensure a delightful experience with us.
+      </p>
+      <h3>Our Facilities</h3>
+      <ul class="facilities">
+        <li>Comfortable Air-Conditioned Rooms</li>
+        <li>24/7 Room Service</li>
+        <li>Complimentary Free Wi-Fi</li>
+        <li>Rooftop Restaurant with City View</li>
+        <li>Easy Access to Major Attractions</li>
+      </ul>
+    </section>
+
+    <section id="rooms" tabindex="1">
+      <h2>Our Rooms</h2>
+      <div class="room-grid">
+        <article class="room">
+          <img src="https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=180" alt="Standard Room" />
+          <div class="room-content">
+            <h3>Standard Room</h3>
+            <p>Comfortable room with all essential amenities. Perfect for solo travelers or couples.</p>
+            <div class="price">800 / night</div>
+          </div>
+        </article>
+        <article class="room">
+          <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=180" alt="Deluxe Room" />
+          <div class="room-content">
+            <h3>Deluxe Room</h3>
+            <p>Spacious room with upgraded facilities and a great view. Ideal for business travelers.</p>
+            <div class="price">1200 / night</div>
+          </div>
+        </article>
+        <article class="room">
+          <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=180" alt="Suite" />
+          <div class="room-content">
+            <h3>Suite</h3>
+            <p>Luxurious suite with separate living area, premium facilities, and exclusive services.</p>
+            <div class="price">2200 / night</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery" tabindex="1">
+      <h2>Looks of our hotel</h2>
+      <div class="gallery-grid">
+        <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Hotel Lobby" />
+        <img src="https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Hotel Room" />
+        <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Dining Area" />
+        <img src="https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Reception" />
+        <img src="https://images.pexels.com/photos/2716241/pexels-photo-2716241.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Rooftop Restaurant" />
+        <img src="https://images.pexels.com/photos/2716995/pexels-photo-2716995.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=160" alt="Swimming Pool" />
+      </div>
+    </section>
+
+    <section id="Registration" tabindex="1">
+		<form>
+		<table cellspacing="15" cellpadding="5" style="color:darkblack;">
+		<h2 style="color:#0077cc;">Resignation Form</u></h2>
+		<tr>	
+			<td><strong>Enter your name</strong></td>
+        		<td><input type="text" required></td>
+		</tr>
+		<tr>
+    			<td><strong>Enter Your Resignation Number</strong></td><td><input type="number" required></td>
+		</tr>
+		<tr>
+			<td><strong>Select Your Gender</strong></td><td><input type="radio" name="gender" required>Male
+			<input type="radio" name="gender" required>Female
+			<input type="radio" name="gender" required>Others</td>
+		</tr>
+		<tr>
+			<td><strong>Adders</strong></td><td><textarea></textarea></td>
+		</tr>
+		<tr>
+			<td><strong>Enter your email</strong></td><td><input type="email" required></td>
+		</tr>
+		<tr>
+    			<td><strong>Choose the date you want</strong></td><td><input type="date" required></td>
+		</tr>
+		<tr>
+			<td><strong>Insert your id proof</strong></td><td><input type="file" required></td>
+		</tr>
+		<tr>
+			<td><strong>Select Your room</strong></td><td><input type="radio" name="gender1">suit
+			<input type="radio" name="gender1">deluxe 
+			<input type="radio" name="gender1">standard</td>
+		</tr>
+		<tr>
+			<td><strong>Enter your url</strong></td><td><input type="url" required></td>
+		</tr>
+		<tr>
+    			<td><strong>Search</strong></td>
+    			<td><input type="search" required></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><button type="submit" aria-label="Send Message">Submit</button>&nbsp&nbsp&nbsp&nbsp&nbsp<button type="cancel" aria-label="Send Message">Reset</button></td>
+		</tr>
+		</table>
+		</form>
+     </section>
+      <section id="contact" tabindex="1">
+      <h2>Contact Us</h2>
+      <form onsubmit="event.preventDefault(); alert('Thank you for your message! We will get back to you soon.'); this.reset();">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" placeholder="Your name" required />
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@gmail.com" required />
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Write your message here" required></textarea>
+
+        <button type="submit" aria-label="Send Message">Send</button>
+      </form>
+      <div class="contact-info">
+        <p><strong>Address:</strong> 123 Main Street, City Center</p>
+        <p><strong>Phone:</strong> +91 984 961 8997</p>
+        <p><strong>Email:</strong> 23BQ1A4712@gmail.com</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 GVR Hotel. All Rights Reserved.
+  </footer>
+</body>
+</html>
